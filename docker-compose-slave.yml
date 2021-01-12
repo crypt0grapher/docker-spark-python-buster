@@ -1,0 +1,36 @@
+services:
+  spark-slave-2:
+    container_name: spark-slave-2
+    # build: ./   
+    image: itertop/spark
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    hostname: spark-slave-2
+    networks: [spark-net]
+    environment:
+      SPARK_CONF_DIR: /conf
+      SPARK_WORKER_CORES: 1
+      SPARK_WORKER_MEMORY: 1g
+      SPARK_WORKER_PORT: 8881
+      SPARK_WORKER_WEBUI_PORT: 8081
+      SPARK_PUBLIC_DNS: localhost
+    expose:
+      - 7012
+      - 7013
+      - 7014
+      - 7015
+      - 8881
+    ports:
+      - 8081:8081
+    volumes:
+      # - type: bind 
+      #   source: .//
+      #   target: /mnt/keywords
+      # - type: bind 
+      #   source: .//
+      #   target: /mnt/input
+      - Y:\dev\Petr\docker-spark-python-buster\worker:/conf
+      # - .//data:/tmp/data
+    # restart: on-failure
+networks:
+  spark-net:
+    external: true
